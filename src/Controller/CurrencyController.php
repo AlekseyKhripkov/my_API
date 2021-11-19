@@ -33,9 +33,10 @@ class CurrencyController extends AbstractController
             if ($value == null || $value = "RUR"){
                 $result["rateCurrency"] = "RUR";
                 $result["rate"] = "70";
-                break;
             }
-            $result["rateCurrency"] = $value;
+            else {
+                $result["rateCurrency"] = $value;
+            }
         }
 
         if ($key == "rateSum"){
@@ -43,12 +44,21 @@ class CurrencyController extends AbstractController
                 $result["rateSum"] = "1";
                 $result["result"] = $result["rate"] * $result["rateSum"];
             }
-            $result["rateSum"] = $value;
-            $result["result"] = $result["rate"] * $result["rateSum"];
+            else {
+                $result["rateSum"] = $value;
+                $result["result"] = $result["rate"] * $result["rateSum"];
+            }
         }
     }
 
-    return new JsonResponse($result);
+        return new JsonResponse([
+            'name' => $result["name"],
+            'code' => $result["code"],
+            'result' => $result["result"],
+            'rateCurrency' => $result["rateCurrency"],
+            'rateSum' => $result["rateSum"],
+            'rate' => $result["rate"]]
+        );
     }
 
 }
