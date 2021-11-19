@@ -20,7 +20,10 @@ class CurrencyController extends AbstractController
     foreach ($request as $key => $value)
     {
         if ($key == "currency"){
-            if ($value = "USD"){
+            if ($value == null){
+                return new JsonResponse('Заполните необходимые поля');
+            }
+            else if ($value == "USD") {
                 $result["name"] = "Доллар";
                 $result["code"] = "USD";
             }
@@ -30,6 +33,7 @@ class CurrencyController extends AbstractController
             if ($value == null || $value = "RUR"){
                 $result["rateCurrency"] = "RUR";
                 $result["rate"] = "70";
+                break;
             }
             $result["rateCurrency"] = $value;
         }
@@ -44,14 +48,7 @@ class CurrencyController extends AbstractController
         }
     }
 
-    return new JsonResponse(
-        ['name' => $result["name"],
-        'code' => $result["code"],
-        'result' => $result["result"]??null,
-        'rateCurrency' => $result["rateCurrency"],
-        'rateSum' => $result["rateCurrency"],
-        'rate' => $result["rate"]??null]
-    );
+    return new JsonResponse($result);
     }
 
 }
