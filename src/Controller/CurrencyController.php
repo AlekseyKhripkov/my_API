@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CurrencyController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+class CurrencyController extends AbstractController
 {
     /**
      * @Route("/currency", name="get_currency", methods={"POST"})
