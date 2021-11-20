@@ -12,53 +12,45 @@ class CurrencyController extends AbstractController
     /**
      * @Route("/currency", name="get_currency", methods={"POST"})
      */
-    public function getCurrency (Request $request)
+    public function getCurrency(Request $request)
     {
         $request = $request->toArray();
         $result = [];
+        $result["rateCurrency"] = "RUR";
+        $result["rateSum"] = 1;
+        $result["rate"] = "70";
 
-    foreach ($request as $key => $value)
-    {
-        if ($key == "currency"){
-            if ($value == null){
-                return new JsonResponse('Заполните необходимые поля');
+        foreach ($request as $key => $value) {
+            if ($key == "currency") {
+                if ($value == null) {
+                    return new JsonResponse('Заполните необходимые поля');
+                } else if ($value == "USD") {
+                    $result["name"] = "Доллар";
+                    $result["code"] = "USD";
+                }
+                else {
+                    return new JsonResponse('В currency введен неизвестный код валют (Возможено вы хотели ввести USD)');
+                }
             }
-            else if ($value == "USD") {
-                $result["name"] = "Доллар";
-                $result["code"] = "USD";
+
+            if ($key == "rateCurrency") {
+                if ($value !== null && $value !== "RUR") {
+                    return new JsonResponse('В rateCurrency введен неизвестный код валют (Возможено вы хотели ввести RUR)');
+                }
+            }
+
+            if ($key == "rateSum") {
+                if ($value !== null && $value !== 1) {
+                    if (is_numeric($value)) {
+                        $result["rateSum"] = $value;
+                        $result["result"] = $result["rate"] * $result["rateSum"];
+                    } else {
+                        return new JsonResponse('rateSum должен являться числом');
+                    }
+                }
             }
         }
 
-        if ($key == "rateCurrency"){
-            if ($value == null || $value = "RUR"){
-                $result["rateCurrency"] = "RUR";
-                $result["rate"] = "70";
-            }
-            else {
-                $result["rateCurrency"] = $value;
-            }
-        }
-
-        if ($key == "rateSum"){
-            if ($value == null || $value == 1){
-                $result["rateSum"] = "1";
-                $result["result"] = $result["rate"] * $result["rateSum"];
-            }
-            else {
-                $result["rateSum"] = $value;
-                $result["result"] = $result["rate"] * $result["rateSum"];
-            }
-        }
+        return new JsonResponse($result);
     }
-
-        return new JsonResponse([
-            'name' => $result["name"],
-            'code' => $result["code"],
-            'result' => $result["result"],
-            'rateCurrency' => $result["rateCurrency"],
-            'rateSum' => $result["rateSum"],
-            'rate' => $result["rate"]]
-        );
-    }
-
 }
