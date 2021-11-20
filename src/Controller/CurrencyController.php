@@ -15,6 +15,9 @@ class CurrencyController extends AbstractController
     public function getCurrency(Request $request)
     {
         $request = $request->toArray();
+        if (!array_key_exists("currency", $request)){
+            return new JsonResponse('currency является обязательным полем запроса');
+        }
         $result = [];
         $result["rateCurrency"] = "RUR";
         $result["rateSum"] = 1;
