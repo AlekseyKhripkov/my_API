@@ -18,7 +18,8 @@ class CurrencyController extends AbstractController
         if (!array_key_exists("currency", $request)){
             return new JsonResponse('currency является обязательным полем запроса');
         }
-        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="2021-11-22"&"timestamp"=1637625600&"base"="RUB"&"rates"="USD"');
+        $date = date('Y-m-d');
+        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"timestamp"=1637625600&"base"="RUB"&"rates"="USD"');
         $info = json_decode($info, true);
         $result = [];
         $result["rateCurrency"] = "RUR";
