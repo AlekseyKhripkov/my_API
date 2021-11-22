@@ -37,7 +37,7 @@ class CurrencyController extends AbstractController
                         $result["name"] = $info["Valute"][$value]["Name"];
                         $result["code"] = $info["Valute"][$value]["CharCode"];
                     } else {
-                        return new JsonResponse('В currency введен неизвестный код валют (Возможено вы хотели ввести USD)');
+                        return new JsonResponse('В currency введен неизвестный код валют');
                     }
 
                 }
