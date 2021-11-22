@@ -18,13 +18,10 @@ class CurrencyController extends AbstractController
         if (!array_key_exists("currency", $request)){
             return new JsonResponse('currency является обязательным полем запроса');
         }
-        $date = date('Y-m-d');
-        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"timestamp"=1637625600&"base"="RUB"&"rates"="USD"');
-        $info = json_decode($info, true);
+
         $result = [];
         $result["rateCurrency"] = "RUR";
         $result["rateSum"] = 1;
-        $result["rate"] = $info["Valute"]["USD"]["Value"];
 
         foreach ($request as $key => $value) {
             if ($key == "currency") {
@@ -33,11 +30,19 @@ class CurrencyController extends AbstractController
                 } else if ($value == "USD") {
                     $result["name"] = "Доллар";
                     $result["code"] = "USD";
+                    $requiredСurrency = "USD";
                 }
                 else {
                     return new JsonResponse('В currency введен неизвестный код валют (Возможено вы хотели ввести USD)');
                 }
             }
+
+            $date = date('Y-m-d');
+            $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"rates"="'.$requiredСurrency.'"');
+            $info = json_decode($info, true);
+            $result["rate"] = $info["Valute"]["USD"]["Value"];
+
+
 
             if ($key == "rateCurrency") {
                 if ($value !== null && $value !== "RUR") {
