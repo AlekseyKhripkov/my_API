@@ -22,9 +22,8 @@ class CurrencyController extends AbstractController
         $result = [];
         $result["rateCurrency"] = "RUR";
         $result["rateSum"] = 1;
-        $requiredСurrency = null;
         $date = date('Y-m-d');
-        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="' . $date . '"&"rates"="' . $requiredСurrency . '"');
+        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="' . $date);
         $info = json_decode($info, true);
 
         foreach ($request as $key => $value) {
