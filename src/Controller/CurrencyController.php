@@ -48,7 +48,6 @@ class CurrencyController extends AbstractController
                 if ($value !== null && $value !== 1) {
                     if (is_numeric($value)) {
                         $result["rateSum"] = $value;
-                        $result["result"] = $result["rate"] * $result["rateSum"];
                     } else {
                         return new JsonResponse('rateSum должен являться числом');
                     }
@@ -60,6 +59,7 @@ class CurrencyController extends AbstractController
         $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"rates"="'.$requiredСurrency.'"');
         $info = json_decode($info, true);
         $result["rate"] = $info["Valute"]["USD"]["Value"];
+        $result["result"] = $result["rate"] * $result["rateSum"];
 
         return new JsonResponse($result);
     }
