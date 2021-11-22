@@ -22,6 +22,7 @@ class CurrencyController extends AbstractController
         $result = [];
         $result["rateCurrency"] = "RUR";
         $result["rateSum"] = 1;
+        $requiredСurrency = null;
 
         foreach ($request as $key => $value) {
             if ($key == "currency") {
@@ -36,13 +37,6 @@ class CurrencyController extends AbstractController
                     return new JsonResponse('В currency введен неизвестный код валют (Возможено вы хотели ввести USD)');
                 }
             }
-
-            $date = date('Y-m-d');
-            $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"rates"="'.$requiredСurrency.'"');
-            $info = json_decode($info, true);
-            $result["rate"] = $info["Valute"]["USD"]["Value"];
-
-
 
             if ($key == "rateCurrency") {
                 if ($value !== null && $value !== "RUR") {
@@ -61,6 +55,11 @@ class CurrencyController extends AbstractController
                 }
             }
         }
+
+        $date = date('Y-m-d');
+        $info = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js?"disclaimer"="https://www.cbr-xml-daily.ru/%23terms"&"date"="'.$date.'"&"rates"="'.$requiredСurrency.'"');
+        $info = json_decode($info, true);
+        $result["rate"] = $info["Valute"]["USD"]["Value"];
 
         return new JsonResponse($result);
     }
